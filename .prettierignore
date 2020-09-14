@@ -2,3 +2,9 @@
 
 /dist
 /coverage
+/tmp
+angular.json
+package.json
+package-lock.json
+yarn.lock
+*.yml

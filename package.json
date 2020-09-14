@@ -28,6 +28,7 @@
     "update": "ng update @nrwl/workspace",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
+    "precommit": "lint-staged",
     "help": "nx help"
   },
   "private": true,
@@ -69,8 +70,10 @@
     "cypress": "^4.1.0",
     "dotenv": "6.2.0",
     "eslint": "6.8.0",
+    "husky": "^4.3.0",
     "jest": "26.2.2",
     "jest-preset-angular": "8.2.1",
+    "lint-staged": "^10.3.0",
     "postcss-import": "12.0.1",
     "postcss-loader": "4.0.1",
     "postcss-scss": "2.1.1",
@@ -80,5 +83,15 @@
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
     "typescript": "~3.9.3"
+  },
+  "lint-staged": {
+    "*.ts": "tslint --fix",
+    "*.{js,ts,scss,css,less,jsx,tsx,json,html,xml}": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit",
+      "pre-push": ""
+    }
   }
 }

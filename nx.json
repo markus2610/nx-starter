@@ -1,39 +1,39 @@
 {
-  "npmScope": "nx-starter",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "implicitDependencies": {
-    "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
+    "npmScope": "nx-starter",
+    "affected": {
+        "defaultBase": "master"
     },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+    "implicitDependencies": {
+        "angular.json": "*",
+        "package.json": {
+            "dependencies": "*",
+            "devDependencies": "*"
+        },
+        "tsconfig.base.json": "*",
+        "tslint.json": "*",
+        "nx.json": "*"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nrwl/workspace/tasks-runners/default",
+            "options": {
+                "cacheableOperations": ["build", "lint", "test", "e2e"]
+            }
+        }
+    },
+    "projects": {
+        "client": {
+            "tags": []
+        },
+        "client-e2e": {
+            "tags": [],
+            "implicitDependencies": ["client"]
+        },
+        "api": {
+            "tags": []
+        },
+        "api-interfaces": {
+            "tags": []
+        }
     }
-  },
-  "projects": {
-    "client": {
-      "tags": []
-    },
-    "client-e2e": {
-      "tags": [],
-      "implicitDependencies": ["client"]
-    },
-    "api": {
-      "tags": []
-    },
-    "api-interfaces": {
-      "tags": []
-    }
-  }
 }
