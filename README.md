@@ -57,6 +57,10 @@ Libraries are sharable across libraries and applications. They can be imported f
 
 Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
+## Production
+
+[Building full-stack web-applications with Angular, NestJS and Nx - a match made in heaven](https://dev.to/hendrikfoo/building-full-stack-web-applications-with-angular-nestjs-and-nx-a-match-made-in-heaven-5fh7)
+
 ## Code scaffolding
 
 Run `ng g component my-component --project=my-app` to generate a new component.
