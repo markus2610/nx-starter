@@ -25,10 +25,13 @@
     "format": "nx format:write",
     "format:write": "nx format:write",
     "format:check": "nx format:check",
+    "format:fe": "nx format:write client",
+    "format:be": "nx format:write api",
     "update": "ng update @nrwl/workspace",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
     "precommit": "lint-staged",
+    "prepush": "npm run format client && npm run format api && npm run lint api && npm run lint client",
     "help": "nx help"
   },
   "private": true,
@@ -91,7 +94,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run precommit",
-      "pre-push": ""
+      "pre-push": "npm run prepush"
     }
   }
 }
