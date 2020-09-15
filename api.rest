@@ -2,7 +2,9 @@
 @port = 3333
 @host = http://{{hostname}}:{{port}}/api
 
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiam9obiBqb2huIiwicm9sZSI6IlVzZXIiLCJzdWIiOiIxIiwiaWF0IjoxNjAwMTg5NDkwLCJleHAiOjE2MDAxOTMwOTB9.Sjb86hJVKlbj5s9ummFK4S2c-Dvvq-SHIW9szLHoWVs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiam9obiBqb2huIiwicm9sZSI6IlVzZXIiLCJzdWIiOiIxIiwiaWF0IjoxNjAwMTg5NDkwLCJleHAiOjE2MDAxOTMwOTB9.Sjb86hJVKlbj5s9ummFK4S2c-Dvvq-SHIW9szLHoWVs
+
+@accessToken = Bearer {{token}}
 
 
 
@@ -24,12 +26,17 @@ Content-Type: application/json
 
 {
     "email": "new@b.com",
-    "password": "Abcd1234",
+    "password": "!Abcd1234",
     "firstName": "New",
     "lastName": "New"
 }
 
 ###
+
+
+###############################################################################
+#                                  PROFILE                                    #
+###############################################################################
 
 GET {{host}}/profile
 Content-Type: application/json

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { LoginResult, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
+import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
 import * as bcryptjs from 'bcryptjs'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
@@ -9,7 +9,7 @@ import { UsersService } from '../users/users.service'
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
-    async validateUser(email: string, pass: string): Promise<any> {
+    async validateUser(email: string, pass: string): Promise<SafeUser> {
         const user = await this.usersService.findOne(email)
         if (user && user.password === pass) {
             const { password, ...result } = user
