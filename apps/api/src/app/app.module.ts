@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module'
         ConfigModule.forRoot({
             envFilePath: environment.production ? '.env' : '.dev.env',
             ignoreEnvFile: false, // make it true in production so that env vars are taken from the OS shell exports
+            isGlobal: true,
         }),
         AuthModule,
         UsersModule,
