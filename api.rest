@@ -33,7 +33,16 @@ Content-Type: application/json
 
 ###
 
-GET {{host}}/auth/verify?token=gQXJUjxM7rvGt7yPWEdQNx-XNJ2v1Odc
+GET {{host}}/auth/verify?token=BW5Eu7ex8x7-xRfRUTS3nurnD0vGtkJJ
+
+###
+
+POST {{host}}/auth/forgot-password
+Content-Type: application/json
+
+{
+    "email": "raju6@b.com"
+}
 
 ###
 

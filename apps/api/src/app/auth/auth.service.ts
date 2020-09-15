@@ -1,11 +1,10 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
-import { nid } from '@nx-starter/util'
 import * as bcryptjs from 'bcryptjs'
+import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
-import { nanoid } from 'nanoid'
 
 @Injectable()
 export class AuthService {
@@ -55,6 +54,16 @@ export class AuthService {
         const accessToken = await this.createAccessToken(user)
 
         return { accessToken }
+    }
+
+    async forgotPassword(email: string): Promise<User> {
+        const user = await this.usersService.findByEmail(email)
+        if (user) {
+            const verifyToken = this.createVerifyToken()
+            console.log('TCL: AuthService -> constructor -> verifyToken', verifyToken)
+            return await this.usersService.update(user._id, { isActive: false, verifyToken })
+        }
+        return null
     }
 
     async createPasswordHash(passwordPlain: string): Promise<string> {
