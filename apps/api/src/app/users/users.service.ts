@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
-
-export type User = any
+import { User, UserRole } from '@nx-starter/api-interfaces'
 
 @Injectable()
 export class UsersService {
@@ -9,22 +8,34 @@ export class UsersService {
     constructor() {
         this.users = [
             {
-                userId: 1,
-                username: 'john',
+                _id: '1',
+                firstName: 'john',
+                lastName: 'john',
                 email: 'a@b.c',
                 password: 'changeme',
+                role: UserRole.User,
+                verifyToken: '',
+                isActive: true,
             },
             {
-                userId: 2,
-                username: 'chris',
+                _id: '2',
+                firstName: 'chris',
+                lastName: 'chris',
                 email: 'b@b.c',
                 password: 'secret',
+                role: UserRole.User,
+                verifyToken: '',
+                isActive: true,
             },
             {
-                userId: 3,
-                username: 'maria',
+                _id: '3',
+                firstName: 'maria',
+                lastName: 'maria',
                 email: 'c@b.c',
                 password: 'guess',
+                role: UserRole.User,
+                verifyToken: '',
+                isActive: true,
             },
         ]
     }

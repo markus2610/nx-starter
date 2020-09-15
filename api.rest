@@ -2,7 +2,7 @@
 @port = 3333
 @host = http://{{hostname}}:{{port}}/api
 
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTYwMDE3MTE5NSwiZXhwIjoxNjAwMTc0Nzk1fQ.9_WZi-Sl90k1u-6fP2wOuusd-MySneb1D5Nf6XmmPG0
+@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiam9obiBqb2huIiwicm9sZSI6IlVzZXIiLCJzdWIiOiIxIiwiaWF0IjoxNjAwMTg5NDkwLCJleHAiOjE2MDAxOTMwOTB9.Sjb86hJVKlbj5s9ummFK4S2c-Dvvq-SHIW9szLHoWVs
 
 
 
