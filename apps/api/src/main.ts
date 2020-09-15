@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common'
+import { Logger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import * as csurf from 'csurf'
 import * as rateLimit from 'express-rate-limit'
@@ -21,6 +21,8 @@ async function bootstrap() {
         }),
     )
     // app.use(csurf())
+
+    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }))
 
     const globalPrefix = 'api'
     app.setGlobalPrefix(globalPrefix)

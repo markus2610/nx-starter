@@ -2,7 +2,7 @@
 @port = 3333
 @host = http://{{hostname}}:{{port}}/api
 
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTYwMDE2MTM4MywiZXhwIjoxNjAwMTY0OTgzfQ.OtPzxojNBbOW9eZ2tBnEwe8VjVl9KybYgcRY4T1R3gM
+@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG4iLCJzdWIiOjEsImlhdCI6MTYwMDE3MTE5NSwiZXhwIjoxNjAwMTc0Nzk1fQ.9_WZi-Sl90k1u-6fP2wOuusd-MySneb1D5Nf6XmmPG0
 
 
 
@@ -14,7 +14,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-    "username": "john", "password": "changeme"
+    "email": "a@b.c", "password": "changeme"
 }
 
 ###
