@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
+import * as bcryptjs from 'bcryptjs'
+import { TokenPayload, User } from '@nx-starter/api-interfaces'
 
 @Injectable()
 export class AuthService {
@@ -15,10 +17,26 @@ export class AuthService {
         return null
     }
 
-    async login(user: any) {
-        const payload = { username: user.username, sub: user.userId }
-        return {
-            access_token: this.jwtService.sign(payload),
+    async login(user: User): Promise<{ accessToken: string }> {
+        const accessToken = await this.createAccessToken(user)
+
+        return { accessToken }
+    }
+
+    async createPasswordHash(passwordPlain: string): Promise<string> {
+        return await bcryptjs.hash(passwordPlain, 10)
+    }
+
+    async comparePasswordWithHash(password: string, hash: string): Promise<boolean> {
+        return await bcryptjs.compare(password, hash)
+    }
+
+    private async createAccessToken(user: User): Promise<string> {
+        const payload: TokenPayload = {
+            name: `${user.firstName} ${user.lastName}`,
+            role: user.role,
+            sub: user._id,
         }
+        return this.jwtService.sign(payload)
     }
 }
