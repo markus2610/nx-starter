@@ -1,56 +1,27 @@
 import { Injectable } from '@nestjs/common'
-import { SafeUser, User, UserRole } from '@nx-starter/api-interfaces'
-import * as passport from 'passport'
-import { CreateUserDto } from './dto/create-user.dto'
+import { InjectModel } from '@nestjs/mongoose'
+import { SafeUser, User } from '@nx-starter/api-interfaces'
+import { ModelNames } from '@nx-starter/mongo-models'
+import { Document, Model } from 'mongoose'
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[]
-
-    constructor() {
-        this.users = [
-            {
-                _id: '1',
-                firstName: 'john',
-                lastName: 'john',
-                email: 'a@b.c',
-                password: 'changeme',
-                role: UserRole.User,
-                verifyToken: '',
-                isActive: true,
-            },
-            {
-                _id: '2',
-                firstName: 'chris',
-                lastName: 'chris',
-                email: 'b@b.c',
-                password: 'secret',
-                role: UserRole.User,
-                verifyToken: '',
-                isActive: true,
-            },
-            {
-                _id: '3',
-                firstName: 'maria',
-                lastName: 'maria',
-                email: 'c@b.c',
-                password: 'guess',
-                role: UserRole.User,
-                verifyToken: '',
-                isActive: true,
-            },
-        ]
-    }
+    constructor(@InjectModel(ModelNames.User) private userModel: Model<User & Document>) {}
 
     async findOne(email: string): Promise<User | undefined> {
-        return this.users.find((user) => user.email === email)
+        const user = await this.userModel.findOne({ email })
+        return user
     }
 
     async create(user: User): Promise<SafeUser> {
-        this.users.push(user)
+        const newUser = new this.userModel(user)
+        const savedUser = await newUser.save()
 
+        return this.getSafeUser(savedUser)
+    }
+
+    private getSafeUser(user: User): SafeUser {
         const { password, verifyToken, ...sanitizedUser } = user
-        console.log('TCL: UsersService -> user', user)
         return sanitizedUser
     }
 }
