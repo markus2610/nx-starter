@@ -19,6 +19,18 @@ Content-Type: application/json
 
 ###
 
+POST {{host}}/auth/signup
+Content-Type: application/json
+
+{
+    "email": "new@b.com",
+    "password": "Abcd1234",
+    "firstName": "New",
+    "lastName": "New"
+}
+
+###
+
 GET {{host}}/profile
 Content-Type: application/json
 Authorization: {{accessToken}}
