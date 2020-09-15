@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { User, UserRole } from '@nx-starter/api-interfaces'
+import { SafeUser, User, UserRole } from '@nx-starter/api-interfaces'
 import * as passport from 'passport'
 import { CreateUserDto } from './dto/create-user.dto'
 
@@ -46,10 +46,10 @@ export class UsersService {
         return this.users.find((user) => user.email === email)
     }
 
-    async create(user: User): Promise<Omit<User, 'password'>> {
+    async create(user: User): Promise<SafeUser> {
         this.users.push(user)
 
-        const { password, ...sanitizedUser } = user
+        const { password, verifyToken, ...sanitizedUser } = user
         console.log('TCL: UsersService -> user', user)
         return sanitizedUser
     }

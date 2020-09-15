@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
+import { nid } from '@nx-starter/util'
 import * as bcryptjs from 'bcryptjs'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
@@ -22,7 +23,7 @@ export class AuthService {
         const password = await this.createPasswordHash(dto.password)
 
         const newUser: User = {
-            _id: Math.random().toString(),
+            _id: nid('u'),
             firstName: dto.firstName,
             lastName: dto.lastName,
             email: dto.email,
