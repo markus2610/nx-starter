@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { environment } from '../environments/environment'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -11,6 +12,7 @@ import { UsersModule } from './users/users.module'
             envFilePath: environment.production ? '.env' : '.dev.env',
             ignoreEnvFile: false, // make it true in production so that env vars are taken from the OS shell exports
         }),
+        AuthModule,
         UsersModule,
     ],
     controllers: [AppController],
