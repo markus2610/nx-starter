@@ -8,7 +8,12 @@ import { Document, Model } from 'mongoose'
 export class UsersService {
     constructor(@InjectModel(ModelNames.User) private userModel: Model<User & Document>) {}
 
-    async findOne(email: string): Promise<User | undefined> {
+    async findByToken(token: string): Promise<User | undefined> {
+        const user = await this.userModel.findOne({ verifyToken: token })
+        return user
+    }
+
+    async findByEmail(email: string): Promise<User | undefined> {
         const user = await this.userModel.findOne({ email })
         return user
     }
@@ -16,8 +21,14 @@ export class UsersService {
     async create(user: User): Promise<SafeUser> {
         const newUser = new this.userModel(user)
         const savedUser = await newUser.save()
+        console.log('TCL: UsersService -> constructor -> savedUser', savedUser)
 
         return this.getSafeUser(savedUser)
+    }
+
+    async update(id: string, partial: Partial<User>) {
+        const user = await this.userModel.findByIdAndUpdate(id, { ...partial }, { new: true })
+        return user
     }
 
     private getSafeUser(user: User): SafeUser {

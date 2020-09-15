@@ -25,11 +25,15 @@ POST {{host}}/auth/signup
 Content-Type: application/json
 
 {
-    "email": "raju3@b.com",
+    "email": "raju6@b.com",
     "password": "!Abcd1234",
     "firstName": "New",
     "lastName": "New"
 }
+
+###
+
+GET {{host}}/auth/verify?token=gQXJUjxM7rvGt7yPWEdQNx-XNJ2v1Odc
 
 ###
 

@@ -1,17 +1,18 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
 import { nid } from '@nx-starter/util'
 import * as bcryptjs from 'bcryptjs'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
+import { nanoid } from 'nanoid'
 
 @Injectable()
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
     async validateUser(email: string, pass: string): Promise<SafeUser> {
-        const user = await this.usersService.findOne(email)
+        const user = await this.usersService.findByEmail(email)
         if (user && user.password === pass) {
             const { password, ...result } = user
             return result
@@ -20,20 +21,34 @@ export class AuthService {
     }
 
     async signup(dto: CreateUserDto): Promise<void> {
+        const userExists = await this.isEmailTaken(dto.email)
+        if (userExists) {
+            throw new BadRequestException('User with the given email already exists')
+        }
+
         const password = await this.createPasswordHash(dto.password)
+        const verifyToken = this.createVerifyToken()
 
         const newUser: User = {
-            _id: nid('u'),
+            _id: undefined,
             firstName: dto.firstName,
             lastName: dto.lastName,
             email: dto.email,
             password,
             role: UserRole.User,
-            verifyToken: null,
+            verifyToken,
             isActive: false,
         }
 
         this.usersService.create(newUser)
+    }
+
+    async verifyByToken(token: string): Promise<User> {
+        const user = await this.usersService.findByToken(token)
+        if (user) {
+            return await this.usersService.update(user._id, { isActive: true, verifyToken: '' })
+        }
+        return null
     }
 
     async login(user: User): Promise<LoginResult> {
@@ -57,5 +72,14 @@ export class AuthService {
             sub: user._id,
         }
         return this.jwtService.sign(payload)
+    }
+
+    private async isEmailTaken(email: string): Promise<boolean> {
+        const result = await this.usersService.findByEmail(email)
+        return Boolean(result)
+    }
+
+    private createVerifyToken(): string {
+        return nanoid(32)
     }
 }
