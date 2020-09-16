@@ -2,7 +2,7 @@
 @port = 3333
 @host = http://{{hostname}}:{{port}}/api
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiam9obiBqb2huIiwicm9sZSI6IlVzZXIiLCJzdWIiOiIxIiwiaWF0IjoxNjAwMTg5NDkwLCJleHAiOjE2MDAxOTMwOTB9.Sjb86hJVKlbj5s9ummFK4S2c-Dvvq-SHIW9szLHoWVs
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUmFqdSA3Iiwicm9sZSI6IlVzZXIiLCJzdWIiOiJ1X2VzMjFsOHA4NmYiLCJpYXQiOjE2MDAyNTA1MDIsImV4cCI6MTYwMDI1NDEwMn0.58PHrSOW-MsM3NHEPGR__epqmHkpG6DXbNLMUJGY7p8
 
 @accessToken = Bearer {{token}}
 
@@ -16,7 +16,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "a@b.c", "password": "changeme"
+    "email": "raju7@b.com", "password": "!Abcd1234"
 }
 
 ###
@@ -25,15 +25,15 @@ POST {{host}}/auth/signup
 Content-Type: application/json
 
 {
-    "email": "raju6@b.com",
+    "email": "raju7@b.com",
     "password": "!Abcd1234",
-    "firstName": "New",
-    "lastName": "New"
+    "firstName": "Raju",
+    "lastName": "7"
 }
 
 ###
 
-GET {{host}}/auth/verify?token=BW5Eu7ex8x7-xRfRUTS3nurnD0vGtkJJ
+GET {{host}}/auth/verify?token=98-IdcdwUQYJhYkSv_QSsWlf7vdssSx4
 
 ###
 
@@ -42,6 +42,27 @@ Content-Type: application/json
 
 {
     "email": "raju6@b.com"
+}
+
+###
+
+POST {{host}}/auth/reset-password/cZHseq8iH2PGkfRcokPjwW4DJDCDGCh9
+Content-Type: application/json
+
+{
+    "password": "!Abcd1234",
+    "passwordConfirm": "!Abcd1234"
+}
+
+###
+
+POST {{host}}/auth/change-password
+Content-Type: application/json
+Authorization: {{accessToken}}
+
+{
+    "password": "!Abcd12345",
+    "passwordConfirm": "!Abcd12345"
 }
 
 ###

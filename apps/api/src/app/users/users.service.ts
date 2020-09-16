@@ -8,6 +8,11 @@ import { Document, Model } from 'mongoose'
 export class UsersService {
     constructor(@InjectModel(ModelNames.User) private userModel: Model<User & Document>) {}
 
+    async findById(id: string): Promise<User | undefined> {
+        const user = await this.userModel.findById(id)
+        return user
+    }
+
     async findByToken(token: string): Promise<User | undefined> {
         const user = await this.userModel.findOne({ verifyToken: token })
         return user
@@ -18,10 +23,9 @@ export class UsersService {
         return user
     }
 
-    async create(user: User): Promise<SafeUser> {
+    async create(user: User): Promise<User> {
         const newUser = new this.userModel(user)
         const savedUser = await newUser.save()
-        console.log('TCL: UsersService -> constructor -> savedUser', savedUser)
 
         return this.getSafeUser(savedUser)
     }
@@ -31,8 +35,7 @@ export class UsersService {
         return user
     }
 
-    private getSafeUser(user: User): SafeUser {
-        const { password, verifyToken, ...sanitizedUser } = user
-        return sanitizedUser
+    getSafeUser(user: User): User {
+        return { ...user, password: undefined, verifyToken: undefined }
     }
 }

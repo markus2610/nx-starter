@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
 import * as bcryptjs from 'bcryptjs'
@@ -10,11 +10,13 @@ import { UsersService } from '../users/users.service'
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
-    async validateUser(email: string, pass: string): Promise<SafeUser> {
+    async getAuthenticatedUser(email: string, password: string): Promise<User> {
         const user = await this.usersService.findByEmail(email)
-        if (user && user.password === pass) {
-            const { password, ...result } = user
-            return result
+        if (!user) throw new NotFoundException('User not found')
+
+        const passwordMatched = await this.comparePasswordWithHash(password, user.password)
+        if (passwordMatched) {
+            return user
         }
         return null
     }
@@ -60,10 +62,33 @@ export class AuthService {
         const user = await this.usersService.findByEmail(email)
         if (user) {
             const verifyToken = this.createVerifyToken()
-            console.log('TCL: AuthService -> constructor -> verifyToken', verifyToken)
             return await this.usersService.update(user._id, { isActive: false, verifyToken })
         }
         return null
+    }
+
+    async resetPassword(token: string, password: string, passwordConfirm: string): Promise<User> {
+        const user = await this.usersService.findByToken(token)
+        if (!user) {
+            throw new UnauthorizedException('Invalid token')
+        }
+        if (password !== passwordConfirm) {
+            throw new BadRequestException('Passwords do not match')
+        }
+        const hashedPassword = await this.createPasswordHash(password)
+        return await this.usersService.update(user._id, { password: hashedPassword, isActive: true, verifyToken: '' })
+    }
+
+    async changePassword(userId: string, password: string, passwordConfirm: string): Promise<User> {
+        const user = await this.usersService.findById(userId)
+        if (!user) {
+            throw new NotFoundException('User not found')
+        }
+        if (password !== passwordConfirm) {
+            throw new BadRequestException('Passwords do not match')
+        }
+        const hashedPassword = await this.createPasswordHash(password)
+        return await this.usersService.update(user._id, { password: hashedPassword })
     }
 
     async createPasswordHash(passwordPlain: string): Promise<string> {
