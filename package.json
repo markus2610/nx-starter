@@ -30,8 +30,6 @@
     "update": "ng update @nrwl/workspace",
     "workspace-schematic": "nx workspace-schematic",
     "dep-graph": "nx dep-graph",
-    "precommit": "lint-staged",
-    "prepush": "npm run affected:lint",
     "help": "nx help"
   },
   "private": true,
@@ -113,7 +111,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit",
+      "pre-commit": "lint-staged",
       "pre-push": ""
     }
   }
