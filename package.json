@@ -98,10 +98,10 @@
     "jest-preset-angular": "8.2.1",
     "lint-staged": "^10.3.0",
     "postcss-import": "12.0.1",
-    "postcss-loader": "4.0.1",
-    "postcss-scss": "2.1.1",
+    "postcss-loader": "4.0.2",
+    "postcss-scss": "3.0.0",
     "prettier": "2.0.4",
-    "tailwindcss": "1.8.9",
+    "tailwindcss": "1.8.10",
     "ts-jest": "26.1.4",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
@@ -109,12 +109,12 @@
   },
   "lint-staged": {
     "*.ts": "tslint --fix",
-    "*.{js,ts,scss,css,less,jsx,tsx,json,html,xml}": "prettier --write"
+    "*.{js,ts,scss,css,less,jsx,tsx,json,html,xml}": "npm run format --uncommitted"
   },
   "husky": {
     "hooks": {
       "pre-commit": "npm run precommit",
-      "pre-push": "npm run prepush"
+      "pre-push": ""
     }
   }
 }
