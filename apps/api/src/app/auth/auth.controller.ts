@@ -10,7 +10,7 @@ import {
     Request,
     UseGuards,
 } from '@nestjs/common'
-import { LoginResult } from '@nx-starter/api-interfaces'
+import { LoginResult, User } from '@nx-starter/api-interfaces'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { AuthService } from './auth.service'
 import { ForgotPasswordDto } from './dto/forgot-password.dto'
@@ -23,7 +23,7 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @Post('signup')
-    async signup(@Body() dto: CreateUserDto) {
+    async signup(@Body() dto: CreateUserDto): Promise<User> {
         return this.authService.signup(dto)
     }
 

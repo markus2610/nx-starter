@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { SafeUser, User } from '@nx-starter/api-interfaces'
+import { User } from '@nx-starter/api-interfaces'
 import { ModelNames } from '@nx-starter/mongo-models'
 import { Document, Model } from 'mongoose'
 
@@ -27,15 +27,11 @@ export class UsersService {
         const newUser = new this.userModel(user)
         const savedUser = await newUser.save()
 
-        return this.getSafeUser(savedUser)
+        return savedUser
     }
 
     async update(id: string, partial: Partial<User>) {
         const user = await this.userModel.findByIdAndUpdate(id, { ...partial }, { new: true })
         return user
-    }
-
-    getSafeUser(user: User): User {
-        return { ...user, password: undefined, verifyToken: undefined }
     }
 }

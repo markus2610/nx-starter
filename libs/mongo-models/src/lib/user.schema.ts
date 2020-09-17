@@ -6,7 +6,6 @@ const userSchema = new Schema(
         _id: { type: String, default: () => nid('u') },
         password: {
             type: String,
-            required: true,
         },
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },

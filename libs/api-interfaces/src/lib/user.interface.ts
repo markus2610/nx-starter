@@ -10,5 +10,3 @@ export interface User {
     verifyToken?: string
     isActive: boolean
 }
-
-export type SafeUser = Omit<User, 'password' | 'verifyToken'>

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { LoginResult, SafeUser, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
+import { LoginResult, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
 import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
@@ -21,7 +21,7 @@ export class AuthService {
         return null
     }
 
-    async signup(dto: CreateUserDto): Promise<void> {
+    async signup(dto: CreateUserDto): Promise<User> {
         const userExists = await this.isEmailTaken(dto.email)
         if (userExists) {
             throw new BadRequestException('User with the given email already exists')
@@ -41,7 +41,10 @@ export class AuthService {
             isActive: false,
         }
 
-        this.usersService.create(newUser)
+        const user = await this.usersService.create(newUser)
+        user.password = undefined
+        user.verifyToken = undefined
+        return user
     }
 
     async verifyByToken(token: string): Promise<User> {
