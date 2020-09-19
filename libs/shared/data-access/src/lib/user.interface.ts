@@ -1,12 +1,12 @@
-import { UserRole } from './user-role.enum'
+import { EUserRole } from './user-role.enum'
 
-export interface User {
+export interface IUser {
     _id: string
     firstName: string
     lastName: string
     email: string
     password: string
-    role: UserRole
+    role: EUserRole
     verifyToken?: string
     isActive: boolean
 }

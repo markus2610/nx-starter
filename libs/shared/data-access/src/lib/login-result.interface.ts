@@ -1,7 +1,7 @@
-import { User } from './user.interface'
+import { IUser } from './user.interface'
 
 export interface LoginResult {
-    user: User
+    user: IUser
     accessToken: string
     refreshToken: string
 }

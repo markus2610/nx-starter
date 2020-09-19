@@ -1,5 +1,5 @@
-export * from './lib/api-interfaces'
+export * from './lib/login-result.interface'
+export * from './lib/refresh-token.interface'
 export * from './lib/token-payload.interface'
 export * from './lib/user-role.enum'
 export * from './lib/user.interface'
-export * from './lib/login-result.interface'

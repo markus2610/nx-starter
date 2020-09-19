@@ -5,7 +5,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { LoginResult, TokenPayload, User, UserRole } from '@nx-starter/shared/data-access'
+import { EUserRole, IUser, LoginResult, TokenPayload } from '@nx-starter/shared/data-access'
 import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
@@ -20,7 +20,7 @@ export class AuthService {
         private refreshTokenService: RefreshTokenService,
     ) {}
 
-    async getAuthenticatedUser(email: string, password: string): Promise<User> {
+    async getAuthenticatedUser(email: string, password: string): Promise<IUser> {
         const user = await this.usersService.findByEmail(email)
         if (!user) throw new NotFoundException('User not found')
 
@@ -31,7 +31,7 @@ export class AuthService {
         return null
     }
 
-    async signup(dto: CreateUserDto): Promise<User> {
+    async signup(dto: CreateUserDto): Promise<IUser> {
         const userExists = await this.isEmailTaken(dto.email)
         if (userExists) {
             throw new BadRequestException('User with the given email already exists')
@@ -40,13 +40,13 @@ export class AuthService {
         const password = await this.createPasswordHash(dto.password)
         const verifyToken = this.createVerifyToken()
 
-        const newUser: User = {
+        const newUser: IUser = {
             _id: undefined,
             firstName: dto.firstName,
             lastName: dto.lastName,
             email: dto.email,
             password,
-            role: UserRole.User,
+            role: EUserRole.User,
             verifyToken,
             isActive: false,
         }
@@ -57,7 +57,7 @@ export class AuthService {
         return user
     }
 
-    async verifyByToken(token: string): Promise<User> {
+    async verifyByToken(token: string): Promise<IUser> {
         const user = await this.usersService.findByToken(token)
         if (user) {
             return await this.usersService.update(user._id, { isActive: true, verifyToken: '' })
@@ -65,14 +65,14 @@ export class AuthService {
         return null
     }
 
-    async login(user: User): Promise<LoginResult> {
+    async login(user: IUser): Promise<LoginResult> {
         const accessToken = await this.createAccessToken(user)
         const refreshToken = '' // todo
 
         return { user, accessToken, refreshToken }
     }
 
-    async forgotPassword(email: string): Promise<User> {
+    async forgotPassword(email: string): Promise<IUser> {
         const user = await this.usersService.findByEmail(email)
         if (user) {
             const verifyToken = this.createVerifyToken()
@@ -81,7 +81,7 @@ export class AuthService {
         return null
     }
 
-    async resetPassword(token: string, password: string, passwordConfirm: string): Promise<User> {
+    async resetPassword(token: string, password: string, passwordConfirm: string): Promise<IUser> {
         const user = await this.usersService.findByToken(token)
         if (!user) {
             throw new UnauthorizedException('Invalid token')
@@ -97,7 +97,11 @@ export class AuthService {
         })
     }
 
-    async changePassword(userId: string, password: string, passwordConfirm: string): Promise<User> {
+    async changePassword(
+        userId: string,
+        password: string,
+        passwordConfirm: string,
+    ): Promise<IUser> {
         const user = await this.usersService.findById(userId)
         if (!user) {
             throw new NotFoundException('User not found')
@@ -117,7 +121,7 @@ export class AuthService {
         return await bcryptjs.compare(password, hash)
     }
 
-    private async createAccessToken(user: User): Promise<string> {
+    private async createAccessToken(user: IUser): Promise<string> {
         const payload: TokenPayload = {
             name: `${user.firstName} ${user.lastName}`,
             role: user.role,
@@ -126,7 +130,7 @@ export class AuthService {
         return this.jwtService.sign(payload)
     }
 
-    public async createRefreshToken(user: User): Promise<string> {
+    public async createRefreshToken(user: IUser): Promise<string> {
         const token = this.jwtService.sign(user._id, { expiresIn: '7d' })
 
         // remove all previous refreshToken
