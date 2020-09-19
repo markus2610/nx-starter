@@ -34,17 +34,22 @@ export class AuthController {
     }
 
     @Get('verify')
-    async verifyUser(@Query('token') verifyToken: string) {
-        return this.authService.verifyByToken(verifyToken)
+    async verifyUser(@Query('token') verifyToken: string): Promise<boolean> {
+        try {
+            await this.authService.verifyByToken(verifyToken)
+            return true
+        } catch (error) {
+            return false
+        }
     }
 
     @Post('forgot-password')
-    async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<void> {
-        const user = await this.authService.forgotPassword(dto.email)
+    async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<string> {
+        const user = await this.authService.generateVerifyTokenAndDisableUser(dto.email)
         if (!user) {
             throw new BadRequestException('No user with that email was found')
         }
-        return
+        return user.verifyToken
     }
 
     @Post('reset-password/:token')

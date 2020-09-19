@@ -4,10 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
+import { JwtInterceptor, UnauthorizedInterceptor } from '@nx-starter/client/auth'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { JwtInterceptor } from './core/interceptors/jwt.interceptor'
-import { UnauthorizedInterceptor } from './core/interceptors/unauthorized.interceptor'
 import { HeaderModule } from './main/header/header.module'
 
 @NgModule({

@@ -36,6 +36,9 @@ export class AuthService {
         if (userExists) {
             throw new BadRequestException('User with the given email already exists')
         }
+        if (dto.password !== dto.passwordConfirm) {
+            throw new BadRequestException('Passwords do not match')
+        }
 
         const password = await this.createPasswordHash(dto.password)
         const verifyToken = this.createVerifyToken()
@@ -50,6 +53,8 @@ export class AuthService {
             verifyToken,
             isActive: false,
         }
+
+        console.log('TCL: VerifyToken :', verifyToken) // ! remove
 
         const user = await this.usersService.create(newUser)
         user.password = undefined
@@ -72,7 +77,7 @@ export class AuthService {
         return { user, accessToken, refreshToken }
     }
 
-    async forgotPassword(email: string): Promise<IUser> {
+    async generateVerifyTokenAndDisableUser(email: string): Promise<IUser> {
         const user = await this.usersService.findByEmail(email)
         if (user) {
             const verifyToken = this.createVerifyToken()

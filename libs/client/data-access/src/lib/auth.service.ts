@@ -46,6 +46,16 @@ export class AuthService implements OnDestroy {
             .pipe(map((loginResult) => this.onLoginSuccess(loginResult)))
     }
 
+    signup(data: {
+        email: string
+        password: string
+        passwordConfirm: string
+        firstName: string
+        lastName: string
+    }): Observable<IUser> {
+        return this.http.post<IUser>('/api/auth/signup', data)
+    }
+
     logout(): Observable<unknown> {
         return this.http.post<unknown>(`/api/auth/logout`, {}).pipe(
             finalize(() => {
@@ -54,6 +64,10 @@ export class AuthService implements OnDestroy {
                 this.stopTokenTimer()
             }),
         )
+    }
+
+    verifyToken(token: string): Observable<boolean> {
+        return this.http.get<boolean>(`/api/auth/verify?token=${token}`)
     }
 
     refreshToken$(): Observable<{ accessToken: string }> {

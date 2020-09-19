@@ -26,7 +26,7 @@ export class RegisterComponent implements OnInit {
     signUp() {
         this.loading = true
         const value = this.registerForm.value
-        this.authService.login(value).subscribe((v) => {
+        this.authService.signup(value).subscribe((v) => {
             this.loading = false
             this.router.navigate(['/'])
         })
@@ -37,6 +37,8 @@ export class RegisterComponent implements OnInit {
             email: ['', Validators.required],
             password: ['', Validators.required],
             passwordConfirm: ['', Validators.required],
+            firstName: '',
+            lastName: '',
         })
     }
 }

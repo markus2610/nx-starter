@@ -12,16 +12,15 @@ const routes: Routes = [
         loadChildren: () => import('@nx-starter/client/auth').then((m) => m.ClientAuthModule),
     },
     {
+        path: 'user',
+        loadChildren: () => import('@nx-starter/client/user').then((m) => m.ClientUserModule),
+    },
+    {
         path: 'page-not-found',
         loadChildren: () =>
             import('./pages/page-not-found/page-not-found.module').then(
                 (m) => m.PageNotFoundModule,
             ),
-    },
-    {
-        path: 'register',
-        loadChildren: () =>
-            import('./pages/register/register.module').then((m) => m.RegisterModule),
     },
     { path: 'login', redirectTo: 'auth/login' },
     { path: 'logout', redirectTo: 'auth/logout' },
