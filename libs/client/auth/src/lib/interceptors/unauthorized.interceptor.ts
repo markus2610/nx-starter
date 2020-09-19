@@ -4,7 +4,6 @@ import { Router } from '@angular/router'
 import { AuthService } from '@nx-starter/client/data-access'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
-import { environment } from '../../../environments/environment'
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
@@ -18,9 +17,6 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
                     this.router.navigate(['login'])
                 }
 
-                if (!environment.production) {
-                    console.error(err)
-                }
                 const error = (err && err.error && err.error.message) || err.statusText
                 return throwError(error)
             }),
