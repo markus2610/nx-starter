@@ -48,7 +48,10 @@ export class AuthController {
     }
 
     @Post('reset-password/:token')
-    async resetPassword(@Body() dto: ResetPasswordDto, @Param('token') token: string): Promise<void> {
+    async resetPassword(
+        @Body() dto: ResetPasswordDto,
+        @Param('token') token: string,
+    ): Promise<void> {
         const user = await this.authService.resetPassword(token, dto.password, dto.passwordConfirm)
         if (!user) {
             throw new InternalServerErrorException('No user with that email was found')
@@ -59,7 +62,11 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('change-password')
     async changePassword(@Request() req, @Body() dto: ResetPasswordDto): Promise<void> {
-        const user = await this.authService.changePassword(req.user.userId, dto.password, dto.passwordConfirm)
+        const user = await this.authService.changePassword(
+            req.user.userId,
+            dto.password,
+            dto.passwordConfirm,
+        )
         if (!user) {
             throw new InternalServerErrorException('No user with that email was found')
         }

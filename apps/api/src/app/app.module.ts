@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
 import { environment } from '../environments/environment'
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { ProfileModule } from './profile/profile.module'
 import { UsersModule } from './users/users.module'
@@ -19,7 +18,8 @@ mongoose.set('useUnifiedTopology', true)
     imports: [
         ConfigModule.forRoot({
             envFilePath: environment.production ? '.env' : '.dev.env',
-            ignoreEnvFile: false, // make it true in production so that env vars are taken from the OS shell exports
+            // make it true in production so that env vars are taken from the OS shell exports
+            ignoreEnvFile: false,
             isGlobal: true,
         }),
         MongooseModule.forRootAsync({
@@ -34,6 +34,6 @@ mongoose.set('useUnifiedTopology', true)
         ProfileModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [],
 })
 export class AppModule {}

@@ -1,14 +1,24 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LoginResult, TokenPayload, User, UserRole } from '@nx-starter/api-interfaces'
 import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
+import { RefreshTokenService } from './refresh-token.service'
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UsersService, private jwtService: JwtService) {}
+    constructor(
+        private usersService: UsersService,
+        private jwtService: JwtService,
+        private refreshTokenService: RefreshTokenService,
+    ) {}
 
     async getAuthenticatedUser(email: string, password: string): Promise<User> {
         const user = await this.usersService.findByEmail(email)
@@ -57,8 +67,9 @@ export class AuthService {
 
     async login(user: User): Promise<LoginResult> {
         const accessToken = await this.createAccessToken(user)
+        const refreshToken = '' // todo
 
-        return { accessToken }
+        return { user, accessToken, refreshToken }
     }
 
     async forgotPassword(email: string): Promise<User> {
@@ -79,7 +90,11 @@ export class AuthService {
             throw new BadRequestException('Passwords do not match')
         }
         const hashedPassword = await this.createPasswordHash(password)
-        return await this.usersService.update(user._id, { password: hashedPassword, isActive: true, verifyToken: '' })
+        return await this.usersService.update(user._id, {
+            password: hashedPassword,
+            isActive: true,
+            verifyToken: '',
+        })
     }
 
     async changePassword(userId: string, password: string, passwordConfirm: string): Promise<User> {
@@ -109,6 +124,17 @@ export class AuthService {
             sub: user._id,
         }
         return this.jwtService.sign(payload)
+    }
+
+    public async createRefreshToken(user: User): Promise<string> {
+        const token = this.jwtService.sign(user._id, { expiresIn: '7d' })
+
+        // remove all previous refreshToken
+        await this.refreshTokenService.deleteByUserId(user._id)
+
+        await this.refreshTokenService.create(user._id, token)
+
+        return token
     }
 
     private async isEmailTaken(email: string): Promise<boolean> {

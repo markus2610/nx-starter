@@ -13,6 +13,17 @@
         "forin": true,
         "import-blacklist": [true, "rxjs/Rx"],
         "interface-over-type-literal": true,
+        "max-line-length": [
+            true,
+            { "limit": 100, "ignore-pattern": "^import |^export {(.*?)} |http" }
+        ],
+        "ordered-imports": [
+            true,
+            {
+                "named-imports-order": "case-insensitive",
+                "import-sources-order": "case-insensitive"
+            }
+        ],
         "member-access": false,
         "member-ordering": [
             true,
