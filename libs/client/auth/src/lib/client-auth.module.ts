@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { LoginComponent } from './login/login.component'
+import { RegisterComponent } from './register/register.component'
 
 @NgModule({
-    declarations: [LoginComponent],
+    declarations: [LoginComponent, RegisterComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -18,6 +19,11 @@ import { LoginComponent } from './login/login.component'
             {
                 path: 'login',
                 component: LoginComponent,
+                pathMatch: 'full',
+            },
+            {
+                path: 'register',
+                component: RegisterComponent,
                 pathMatch: 'full',
             },
         ]),
