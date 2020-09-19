@@ -46,6 +46,12 @@
         },
         "client-auth": {
             "tags": []
+        },
+        "client-ui": {
+            "tags": []
+        },
+        "client-user": {
+            "tags": []
         }
     }
 }
