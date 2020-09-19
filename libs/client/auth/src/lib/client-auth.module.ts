@@ -2,12 +2,20 @@ import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'
 import { LoginComponent } from './login/login.component'
 import { RegisterComponent } from './register/register.component'
+import { ResetPasswordComponent } from './reset-password/reset-password.component'
 import { VerifyComponent } from './verify/verify.component'
 
 @NgModule({
-    declarations: [LoginComponent, RegisterComponent, VerifyComponent],
+    declarations: [
+        LoginComponent,
+        RegisterComponent,
+        VerifyComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent,
+    ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -30,6 +38,16 @@ import { VerifyComponent } from './verify/verify.component'
             {
                 path: 'verify',
                 component: VerifyComponent,
+                pathMatch: 'full',
+            },
+            {
+                path: 'forgot-password',
+                component: ForgotPasswordComponent,
+                pathMatch: 'full',
+            },
+            {
+                path: 'reset-password/:token',
+                component: ResetPasswordComponent,
                 pathMatch: 'full',
             },
         ]),

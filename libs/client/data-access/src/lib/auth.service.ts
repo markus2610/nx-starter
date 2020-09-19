@@ -46,6 +46,17 @@ export class AuthService implements OnDestroy {
             .pipe(map((loginResult) => this.onLoginSuccess(loginResult)))
     }
 
+    forgotPassword(email: string): Observable<boolean> {
+        return this.http.post<boolean>('/api/auth/forgot-password', { email })
+    }
+
+    resetPassword(
+        token: string,
+        passwords: { password: string; passwordConfirm: string },
+    ): Observable<boolean> {
+        return this.http.post<boolean>(`/api/auth/reset-password/${token}`, passwords)
+    }
+
     signup(data: {
         email: string
         password: string

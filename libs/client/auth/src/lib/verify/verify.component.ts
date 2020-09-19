@@ -16,7 +16,6 @@ export class VerifyComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        // 6uF7ps583i9-EGrKg6PWbnSK3HCPCz9y
         this.route.queryParamMap
             .pipe(
                 filter((params) => params.has('token')),

@@ -44,12 +44,13 @@ export class AuthController {
     }
 
     @Post('forgot-password')
-    async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<string> {
+    async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<void> {
         const user = await this.authService.generateVerifyTokenAndDisableUser(dto.email)
+        console.log('TCL: Token', user.verifyToken)
         if (!user) {
             throw new BadRequestException('No user with that email was found')
         }
-        return user.verifyToken
+        return
     }
 
     @Post('reset-password/:token')
