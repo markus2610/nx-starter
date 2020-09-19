@@ -40,6 +40,12 @@
         },
         "api-mongo-models": {
             "tags": []
+        },
+        "client-data-access": {
+            "tags": []
+        },
+        "client-auth": {
+            "tags": []
         }
     }
 }

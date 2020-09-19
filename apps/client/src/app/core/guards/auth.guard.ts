@@ -6,9 +6,9 @@ import {
     RouterStateSnapshot,
     UrlTree,
 } from '@angular/router'
+import { AuthService } from '@nx-starter/client/data-access'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { AuthService } from '../../main/auth/services/auth.service'
 
 @Injectable({
     providedIn: 'root',

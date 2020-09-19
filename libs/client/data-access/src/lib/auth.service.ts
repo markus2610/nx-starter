@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
-import { LoginResult, User } from '@nx-starter/shared/data-access'
+import { IUser, LoginResult } from '@nx-starter/shared/data-access'
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs'
 import { delay, finalize, map, tap } from 'rxjs/operators'
 
@@ -9,22 +9,22 @@ import { delay, finalize, map, tap } from 'rxjs/operators'
     providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-    private currentUserSubject: BehaviorSubject<User>
+    private currentUserSubject: BehaviorSubject<IUser>
     private currentTokenSubject: BehaviorSubject<string>
     private timer: Subscription
 
-    user$: Observable<User>
+    user$: Observable<IUser>
     token$: Observable<string>
 
     constructor(private router: Router, private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(null)
+        this.currentUserSubject = new BehaviorSubject<IUser>(null)
         this.currentTokenSubject = new BehaviorSubject<string>(localStorage.getItem('access_token'))
         this.user$ = this.currentUserSubject.asObservable()
         this.token$ = this.currentTokenSubject.asObservable()
         window.addEventListener('storage', this.storageEventListener.bind(this))
     }
 
-    get currentUserValue(): User {
+    get currentUserValue(): IUser {
         return this.currentUserSubject.value
     }
 
@@ -40,7 +40,7 @@ export class AuthService implements OnDestroy {
         return this.http.get(`/api/auth/me`).pipe()
     }
 
-    login(data: { email: string; password: string }): Observable<User> {
+    login(data: { email: string; password: string }): Observable<IUser> {
         return this.http
             .post<LoginResult>('/api/auth/login', data)
             .pipe(map((loginResult) => this.onLoginSuccess(loginResult)))
@@ -99,7 +99,7 @@ export class AuthService implements OnDestroy {
             if (event.key === 'login-event') {
                 console.log('TCL: storageEventListener -> event.key', event.key)
                 this.stopTokenTimer()
-                this.http.get<User>(`/api/auth/me`).subscribe((user) => {
+                this.http.get<IUser>(`/api/auth/me`).subscribe((user) => {
                     this.currentUserSubject.next(user)
                 })
             }
@@ -130,7 +130,7 @@ export class AuthService implements OnDestroy {
         this.timer?.unsubscribe()
     }
 
-    private onLoginSuccess(loginResult: LoginResult): User {
+    private onLoginSuccess(loginResult: LoginResult): IUser {
         this.currentUserSubject.next(loginResult.user)
         this.currentTokenSubject.next(loginResult.accessToken)
         this.setTokensToStorage(loginResult)

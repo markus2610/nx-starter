@@ -1,4 +1,4 @@
-import { AuthService } from '../../main/auth/services/auth.service'
+import { AuthService } from '@nx-starter/client/data-access'
 
 export function appInitializer(authService: AuthService) {
     return () =>

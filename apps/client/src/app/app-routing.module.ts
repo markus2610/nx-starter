@@ -8,12 +8,8 @@ const routes: Routes = [
         loadChildren: () => import('./pages/home/home.module').then((m) => m.HomeModule),
     },
     {
-        path: 'login',
-        loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule),
-    },
-    {
-        path: 'logout',
-        loadChildren: () => import('./pages/logout/logout.module').then((m) => m.LogoutModule),
+        path: 'auth',
+        loadChildren: () => import('@nx-starter/client/auth').then((m) => m.ClientAuthModule),
     },
     {
         path: 'page-not-found',
@@ -27,6 +23,9 @@ const routes: Routes = [
         loadChildren: () =>
             import('./pages/register/register.module').then((m) => m.RegisterModule),
     },
+    { path: 'login', redirectTo: 'auth/login' },
+    { path: 'logout', redirectTo: 'auth/logout' },
+    { path: 'register', redirectTo: 'auth/register' },
     { path: '**', redirectTo: 'page-not-found' },
 ]
 

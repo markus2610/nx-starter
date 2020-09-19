@@ -1,10 +1,10 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { Router } from '@angular/router'
+import { AuthService } from '@nx-starter/client/data-access'
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 import { environment } from '../../../environments/environment'
-import { AuthService } from '../../main/auth/services/auth.service'
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {

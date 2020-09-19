@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { User } from '@nx-starter/shared/data-access'
+import { AuthService } from '@nx-starter/client/data-access'
+import { IUser } from '@nx-starter/shared/data-access'
 import { Observable } from 'rxjs'
-import { AuthService } from '../../../auth/services/auth.service'
 
 @Component({
     selector: 'nx-starter-header-one',
@@ -10,7 +10,7 @@ import { AuthService } from '../../../auth/services/auth.service'
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderOneComponent implements OnInit {
-    currentUser$: Observable<User>
+    currentUser$: Observable<IUser>
 
     constructor(private authService: AuthService) {}
 

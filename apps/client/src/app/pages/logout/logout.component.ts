@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { AuthService } from '../../main/auth/services/auth.service'
+import { AuthService } from '@nx-starter/client/data-access'
 
 @Component({
     selector: 'nx-starter-logout',
