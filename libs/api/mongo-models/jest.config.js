@@ -1,6 +1,6 @@
 module.exports = {
-    name: 'mongo-models',
-    preset: '../../jest.config.js',
+    name: 'api-mongo-models',
+    preset: '../../../jest.config.js',
     globals: {
         'ts-jest': {
             tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../coverage/libs/mongo-models',
+    coverageDirectory: '../../../coverage/libs/api/mongo-models',
 }

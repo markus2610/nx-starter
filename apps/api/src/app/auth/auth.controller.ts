@@ -10,7 +10,7 @@ import {
     Request,
     UseGuards,
 } from '@nestjs/common'
-import { LoginResult, User } from '@nx-starter/api-interfaces'
+import { LoginResult, User } from '@nx-starter/shared/data-access'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { AuthService } from './auth.service'
 import { ForgotPasswordDto } from './dto/forgot-password.dto'

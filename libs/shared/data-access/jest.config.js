@@ -1,6 +1,6 @@
 module.exports = {
-    name: 'api-interfaces',
-    preset: '../../jest.config.js',
+    name: 'shared-data-access',
+    preset: '../../../jest.config.js',
     globals: {
         'ts-jest': {
             tsConfig: '<rootDir>/tsconfig.spec.json',
@@ -10,5 +10,5 @@ module.exports = {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../coverage/libs/api-interfaces',
+    coverageDirectory: '../../../coverage/libs/shared/data-access',
 }

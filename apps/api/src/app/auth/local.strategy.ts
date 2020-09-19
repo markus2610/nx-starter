@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
-import { User } from '@nx-starter/api-interfaces'
+import { User } from '@nx-starter/shared/data-access'
 import { Strategy } from 'passport-local'
 import { AuthService } from './auth.service'
 

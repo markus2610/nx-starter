@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { UsersService } from './users.service'
 import { MongooseModule } from '@nestjs/mongoose'
-import { ModelNames, UserSchema } from '@nx-starter/mongo-models'
+import { ModelNames, UserSchema } from '@nx-starter/api/mongo-models'
+import { UsersService } from './users.service'
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: ModelNames.User, schema: UserSchema }])],

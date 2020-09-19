@@ -32,13 +32,13 @@
         "api": {
             "tags": []
         },
-        "api-interfaces": {
-            "tags": []
-        },
         "util": {
             "tags": []
         },
-        "mongo-models": {
+        "shared-data-access": {
+            "tags": []
+        },
+        "api-mongo-models": {
             "tags": []
         }
     }

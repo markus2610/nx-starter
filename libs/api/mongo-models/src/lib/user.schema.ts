@@ -1,5 +1,5 @@
-import { Document, Schema } from 'mongoose'
 import { nid } from '@nx-starter/util'
+import { Document, Schema } from 'mongoose'
 
 const userSchema = new Schema(
     {

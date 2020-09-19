@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { User } from '@nx-starter/api-interfaces'
-import { ModelNames } from '@nx-starter/mongo-models'
+import { ModelNames } from '@nx-starter/api/mongo-models'
+import { User } from '@nx-starter/shared/data-access'
 import { Document, Model } from 'mongoose'
 
 @Injectable()

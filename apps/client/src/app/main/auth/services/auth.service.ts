@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
-import { LoginResult, User } from '@nx-starter/api-interfaces'
+import { LoginResult, User } from '@nx-starter/shared/data-access'
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs'
 import { delay, finalize, map, tap } from 'rxjs/operators'
 

@@ -16,9 +16,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@nx-starter/api-interfaces": ["libs/api-interfaces/src/index.ts"],
             "@nx-starter/util": ["libs/util/src/index.ts"],
-            "@nx-starter/mongo-models": ["libs/mongo-models/src/index.ts"]
+            "@nx-starter/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+            "@nx-starter/api/mongo-models": ["libs/api/mongo-models/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
