@@ -1,12 +1,14 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
-import { NgModule } from '@angular/core'
+import { APP_INITIALIZER, NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { RouterModule } from '@angular/router'
-import { JwtInterceptor, UnauthorizedInterceptor } from '@nx-starter/client/auth'
+import { JwtInterceptor } from '@nx-starter/client/auth'
+import { AuthService } from '@nx-starter/client/data-access'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { appInitializer } from './core/app-initializer'
 import { HeaderModule } from './main/header/header.module'
 
 @NgModule({
@@ -34,9 +36,10 @@ import { HeaderModule } from './main/header/header.module'
             multi: true,
         },
         {
-            provide: HTTP_INTERCEPTORS,
-            useClass: UnauthorizedInterceptor,
+            provide: APP_INITIALIZER,
+            useFactory: appInitializer,
             multi: true,
+            deps: [AuthService],
         },
     ],
     bootstrap: [AppComponent],

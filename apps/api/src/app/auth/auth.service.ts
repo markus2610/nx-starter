@@ -72,7 +72,7 @@ export class AuthService {
 
     async login(user: IUser): Promise<LoginResult> {
         const accessToken = await this.createAccessToken(user)
-        const refreshToken = '' // todo
+        const refreshToken = await this.createRefreshToken(user)
 
         return { user, accessToken, refreshToken }
     }
@@ -118,6 +118,15 @@ export class AuthService {
         return await this.usersService.update(user._id, { password: hashedPassword })
     }
 
+    async getNewAccessToken(refreshToken: string): Promise<string> {
+        const tokenEntry = await this.refreshTokenService.findByToken(refreshToken)
+        if (!tokenEntry) throw new UnauthorizedException('Session expired. Please login again')
+
+        const user = await this.usersService.findById(tokenEntry.userId)
+
+        return this.createAccessToken(user)
+    }
+
     async createPasswordHash(passwordPlain: string): Promise<string> {
         return await bcryptjs.hash(passwordPlain, 10)
     }
@@ -132,11 +141,11 @@ export class AuthService {
             role: user.role,
             sub: user._id,
         }
-        return this.jwtService.sign(payload)
+        return this.jwtService.sign(payload, { expiresIn: '1m' }) // TODO remove expire
     }
 
     public async createRefreshToken(user: IUser): Promise<string> {
-        const token = this.jwtService.sign(user._id, { expiresIn: '7d' })
+        const token = this.jwtService.sign({ userId: user._id }, { expiresIn: '30d' })
 
         // remove all previous refreshToken
         await this.refreshTokenService.deleteByUserId(user._id)

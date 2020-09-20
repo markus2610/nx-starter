@@ -3,41 +3,39 @@ import { Injectable, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
 import { IUser, LoginResult } from '@nx-starter/shared/data-access'
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs'
-import { delay, finalize, map, tap } from 'rxjs/operators'
+import { delay, finalize, map, retry, switchMap, tap } from 'rxjs/operators'
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-    private currentUserSubject: BehaviorSubject<IUser>
-    private currentTokenSubject: BehaviorSubject<string>
+    private currentUser$$: BehaviorSubject<IUser> = new BehaviorSubject<IUser>(null)
+    private currentToken$$: BehaviorSubject<string> = new BehaviorSubject<string>(
+        this.getAccessToken(),
+    )
     private timer: Subscription
 
-    user$: Observable<IUser>
-    token$: Observable<string>
+    user$: Observable<IUser> = this.currentUser$$.asObservable()
+    token$: Observable<string> = this.currentToken$$.asObservable()
 
     constructor(private router: Router, private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<IUser>(null)
-        this.currentTokenSubject = new BehaviorSubject<string>(localStorage.getItem('access_token'))
-        this.user$ = this.currentUserSubject.asObservable()
-        this.token$ = this.currentTokenSubject.asObservable()
         window.addEventListener('storage', this.storageEventListener.bind(this))
     }
 
     get currentUserValue(): IUser {
-        return this.currentUserSubject.value
+        return this.currentUser$$.value
     }
 
     get currentTokenValue(): string {
-        return this.currentTokenSubject.value
+        return this.currentToken$$.value
     }
 
     ngOnDestroy(): void {
         window.removeEventListener('storage', this.storageEventListener.bind(this))
     }
 
-    me() {
-        return this.http.get(`/api/auth/me`).pipe()
+    me(): Observable<IUser> {
+        return this.http.get<IUser>(`/api/auth/me`)
     }
 
     login(data: { email: string; password: string }): Observable<IUser> {
@@ -68,13 +66,9 @@ export class AuthService implements OnDestroy {
     }
 
     logout(): Observable<unknown> {
-        return this.http.post<unknown>(`/api/auth/logout`, {}).pipe(
-            finalize(() => {
-                this.clearLocalStorage()
-                this.currentUserSubject.next(null)
-                this.stopTokenTimer()
-            }),
-        )
+        return this.http
+            .post<unknown>(`/api/auth/logout`, {})
+            .pipe(finalize(() => this.onLogoutSuccess()))
     }
 
     verifyToken(token: string): Observable<boolean> {
@@ -82,53 +76,43 @@ export class AuthService implements OnDestroy {
     }
 
     refreshToken$(): Observable<{ accessToken: string }> {
-        const refreshToken = localStorage.getItem('refresh_token')
+        const refreshToken = this.getRefreshToken()
+        console.log('TCL: refreshToken', refreshToken)
         if (!refreshToken) {
-            this.clearLocalStorage()
+            this.clearStoredTokens()
             return of(null)
         }
 
         return this.http
-            .post<{ accessToken: string }>(`/api/auth/token`, { refreshToken })
+            .post<{ accessToken: string }>(`/api/auth/token`, {
+                refreshToken,
+            })
+
             .pipe(
-                tap((data: { accessToken: string }) => {
-                    this.setAccesTokenToStorage(data.accessToken)
-                    this.startTokenTimer()
-                }),
+                tap(({ accessToken }) => this.storeAccessToken(accessToken)),
+                tap(() => this.startTokenTimer()), // TODO
             )
     }
 
-    setTokensToStorage(loginResult: LoginResult) {
-        localStorage.setItem('access_token', loginResult.accessToken)
-        localStorage.setItem('refresh_token', loginResult.refreshToken)
-        localStorage.setItem('login-event', 'login' + Math.random())
-    }
-
-    setAccesTokenToStorage(token: string): void {
+    private storeAccessToken(token: string): void {
         localStorage.setItem('access_token', token)
     }
 
-    clearLocalStorage() {
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        localStorage.setItem('logout-event', 'logout' + Math.random())
+    private storeRefreshToken(token: string): void {
+        localStorage.setItem('refresh_token', token)
     }
 
-    private storageEventListener(event: StorageEvent) {
-        if (event.storageArea === localStorage) {
-            if (event.key === 'logout-event') {
-                this.stopTokenTimer()
-                this.currentUserSubject.next(null)
-            }
+    private getAccessToken(): string {
+        return localStorage.getItem('access_token')
+    }
 
-            if (event.key === 'login-event') {
-                console.log('TCL: storageEventListener -> event.key', event.key)
-                this.stopTokenTimer()
-                this.http.get<IUser>(`/api/auth/me`).subscribe((user) => {
-                    this.currentUserSubject.next(user)
-                })
-            }
-        }
+    private getRefreshToken(): string {
+        return localStorage.getItem('refresh_token')
+    }
+
+    private clearStoredTokens() {
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
     }
 
     private getTokenRemainingTime() {
@@ -143,6 +127,7 @@ export class AuthService implements OnDestroy {
 
     private startTokenTimer() {
         const timeout = this.getTokenRemainingTime()
+        console.log('TCL: startTokenTimer -> timeout', timeout)
         this.timer = of(true)
             .pipe(
                 delay(timeout),
@@ -155,12 +140,36 @@ export class AuthService implements OnDestroy {
         this.timer?.unsubscribe()
     }
 
+    private onLogoutSuccess() {
+        localStorage.setItem('logout-event', 'logout' + Math.random())
+        this.clearStoredTokens()
+        this.stopTokenTimer()
+        this.currentUser$$.next(null)
+    }
+
     private onLoginSuccess(loginResult: LoginResult): IUser {
-        this.currentUserSubject.next(loginResult.user)
-        this.currentTokenSubject.next(loginResult.accessToken)
-        this.setTokensToStorage(loginResult)
+        this.currentUser$$.next(loginResult.user)
+        this.currentToken$$.next(loginResult.accessToken)
+        this.storeAccessToken(loginResult.accessToken)
+        this.storeRefreshToken(loginResult.refreshToken)
         localStorage.setItem('login-event', 'login' + Math.random())
-        this.startTokenTimer()
         return loginResult.user
+    }
+
+    private storageEventListener(event: StorageEvent) {
+        console.log('TCL: storageEventListener -> event', event)
+        if (event.storageArea === localStorage) {
+            if (event.key === 'logout-event') {
+                this.stopTokenTimer()
+                this.currentUser$$.next(null)
+            }
+            if (event.key === 'login-event') {
+                console.log('TCL: storageEventListener -> event.key', event.key)
+                this.stopTokenTimer()
+                this.http.get<IUser>(`/api/auth/me`).subscribe((user) => {
+                    this.currentUser$$.next(user)
+                })
+            }
+        }
     }
 }

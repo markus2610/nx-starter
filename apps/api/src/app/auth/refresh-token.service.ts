@@ -17,6 +17,10 @@ export class RefreshTokenService {
         return await createdToken.save()
     }
 
+    async findByToken(token: string): Promise<IRefreshToken> {
+        return await this.refreshTokenModel.findOne({ token })
+    }
+
     async deleteByUserId(userId: string): Promise<void> {
         await this.refreshTokenModel.deleteMany({ userId })
     }

@@ -43,6 +43,7 @@ export class AuthController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post('forgot-password')
     async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<void> {
         const user = await this.authService.generateVerifyTokenAndDisableUser(dto.email)
@@ -77,5 +78,16 @@ export class AuthController {
             throw new InternalServerErrorException('No user with that email was found')
         }
         return
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('token')
+    async getNewToken(
+        @Request() req,
+        @Body() dto: { refreshToken: string },
+    ): Promise<{ accessToken: string }> {
+        const token = await this.authService.getNewAccessToken(dto.refreshToken)
+
+        return { accessToken: token }
     }
 }
