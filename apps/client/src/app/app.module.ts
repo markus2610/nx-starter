@@ -35,12 +35,12 @@ import { HeaderModule } from './main/header/header.module'
             useClass: JwtInterceptor,
             multi: true,
         },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: appInitializer,
-            multi: true,
-            deps: [AuthService],
-        },
+        // {
+        //     provide: APP_INITIALIZER,
+        //     useFactory: appInitializer,
+        //     multi: true,
+        //     deps: [AuthService],
+        // },
     ],
     bootstrap: [AppComponent],
 })

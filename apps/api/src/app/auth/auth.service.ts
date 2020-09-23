@@ -77,6 +77,10 @@ export class AuthService {
         return { user, accessToken, refreshToken }
     }
 
+    async logout(user: IUser): Promise<void> {
+        await this.refreshTokenService.deleteByUserId(user._id)
+    }
+
     async generateVerifyTokenAndDisableUser(email: string): Promise<IUser> {
         const user = await this.usersService.findByEmail(email)
         if (user) {
@@ -141,7 +145,7 @@ export class AuthService {
             role: user.role,
             sub: user._id,
         }
-        return this.jwtService.sign(payload, { expiresIn: '1m' }) // TODO remove expire
+        return this.jwtService.sign(payload, { expiresIn: '60m' })
     }
 
     public async createRefreshToken(user: IUser): Promise<string> {

@@ -33,6 +33,13 @@ export class AuthController {
         return this.authService.login(req.user)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('logout')
+    async logout(@Request() req): Promise<void> {
+        console.log('TCL: AuthController -> constructor -> req', req)
+        return this.authService.logout(req.user)
+    }
+
     @Get('verify')
     async verifyUser(@Query('token') verifyToken: string): Promise<boolean> {
         try {
@@ -80,7 +87,6 @@ export class AuthController {
         return
     }
 
-    @UseGuards(JwtAuthGuard)
     @Post('token')
     async getNewToken(
         @Request() req,

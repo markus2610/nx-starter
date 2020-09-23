@@ -13,7 +13,7 @@ import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators'
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
     private isRefreshing = false
-    private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null)
+    private refreshToken$$: BehaviorSubject<any> = new BehaviorSubject<any>(null)
 
     constructor(private authService: AuthService) {}
 
@@ -24,7 +24,6 @@ export class JwtInterceptor implements HttpInterceptor {
             })
         }
 
-        // add auth header with jwt if user is logged in and request is to the api url
         request = this.addToken(request)
 
         return next.handle(request).pipe(
@@ -32,22 +31,21 @@ export class JwtInterceptor implements HttpInterceptor {
                 if (error && error.status === 401) {
                     return this.handleUnauthorizedError(request, next)
                 } else {
+                    // TODO add toaster
                     return throwError(error)
                 }
             }),
         )
     }
 
-    private addToken(request: HttpRequest<unknown>) {
-        // If we do not have a token yet then we should not set the header.
-        // Here we could first retrieve the token from where we store it.
+    private addToken(request: HttpRequest<unknown>): HttpRequest<unknown> {
         if (!this.authService.currentTokenValue) {
             return request
         }
         // If you are calling an outside domain then do not add the token.
-        if (!request.url.match(/www.mydomain.com\//)) {
-            return request
-        }
+        // if (!request.url.match(/www.mydomain.com\//)) {
+        //     return request
+        // }
         return request.clone({
             headers: request.headers.set(
                 'Authorization',
@@ -56,22 +54,20 @@ export class JwtInterceptor implements HttpInterceptor {
         })
     }
 
-    // when a request is unauthorized, check if the jwt has expired. If so,
-    // attempt to get a new token and send the failed request again
     private handleUnauthorizedError(request: HttpRequest<unknown>, next: HttpHandler) {
         if (this.isRefreshing) {
-            return this.refreshTokenSubject.pipe(
+            return this.refreshToken$$.pipe(
                 filter((token) => token !== null),
                 take(1),
-                switchMap((jwt) => next.handle(this.addToken(request))),
+                switchMap(() => next.handle(this.addToken(request))),
             )
         } else {
             this.isRefreshing = true
-            this.refreshTokenSubject.next(null)
+            this.refreshToken$$.next(null)
 
-            return this.authService.refreshToken$().pipe(
+            return this.authService.getNewAccessToken$().pipe(
                 switchMap(({ accessToken }) => {
-                    this.refreshTokenSubject.next(accessToken)
+                    this.refreshToken$$.next(accessToken)
                     return next.handle(this.addToken(request))
                 }),
                 finalize(() => (this.isRefreshing = false)),
