@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { ModelNames } from '@nx-starter/api/mongo-models'
-import { IRefreshToken } from '@nx-starter/shared/data-access'
+import { ModelNames } from '@nx-starter/api-models'
+import { IRefreshToken } from '@nx-starter/shared-models'
 import { Document, Model } from 'mongoose'
 
 @Injectable()

@@ -9,11 +9,11 @@ const routes: Routes = [
     },
     {
         path: 'auth',
-        loadChildren: () => import('@nx-starter/client/auth').then((m) => m.ClientAuthModule),
+        loadChildren: () => import('@nx-starter/webapp-auth').then((m) => m.WebappAuthModule),
     },
     {
         path: 'user',
-        loadChildren: () => import('@nx-starter/client/user').then((m) => m.ClientUserModule),
+        loadChildren: () => import('@nx-starter/webapp-user').then((m) => m.WebappUserModule),
     },
     {
         path: 'page-not-found',

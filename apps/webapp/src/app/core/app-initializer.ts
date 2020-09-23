@@ -1,4 +1,4 @@
-import { AuthService } from '@nx-starter/client/data-access'
+import { AuthService } from '@nx-starter/webapp-models'
 
 export function appInitializer(authService: AuthService) {
     return () => authService.getNewAccessTokenAsPromise()

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
-import { ModelNames, UserSchema } from '@nx-starter/api/mongo-models'
+import { ModelNames, UserSchema } from '@nx-starter/api-models'
 import { UsersService } from './users.service'
 
 @Module({

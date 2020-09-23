@@ -16,13 +16,13 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@nx-starter/util": ["libs/util/src/index.ts"],
-            "@nx-starter/shared/data-access": ["libs/shared/data-access/src/index.ts"],
-            "@nx-starter/api/mongo-models": ["libs/api/mongo-models/src/index.ts"],
-            "@nx-starter/client/data-access": ["libs/client/data-access/src/index.ts"],
-            "@nx-starter/client/auth": ["libs/client/auth/src/index.ts"],
-            "@nx-starter/client/ui": ["libs/client/ui/src/index.ts"],
-            "@nx-starter/client/user": ["libs/client/user/src/index.ts"]
+            "@nx-starter/shared-utils": ["libs/shared-utils/src/index.ts"],
+            "@nx-starter/webapp-auth": ["libs/webapp-auth/src/index.ts"],
+            "@nx-starter/webapp-ui": ["libs/webapp-ui/src/index.ts"],
+            "@nx-starter/webapp-user": ["libs/webapp-user/src/index.ts"],
+            "@nx-starter/shared-models": ["libs/shared-models/src/index.ts"],
+            "@nx-starter/webapp-models": ["libs/webapp-models/src/index.ts"],
+            "@nx-starter/api-models": ["libs/api-models/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

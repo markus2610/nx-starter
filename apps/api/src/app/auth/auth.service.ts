@@ -5,13 +5,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import {
-    EUserRole,
-    IAppUser,
-    IUser,
-    LoginResult,
-    TokenPayload,
-} from '@nx-starter/shared/data-access'
+import { EUserRole, IAppUser, IUser, LoginResult, TokenPayload } from '@nx-starter/shared-models'
 import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'

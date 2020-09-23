@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core'
-import { AuthService } from '@nx-starter/client/data-access'
-import { IUser } from '@nx-starter/shared/data-access'
+import { IUser } from '@nx-starter/shared-models'
+import { AuthService } from '@nx-starter/webapp-models'
 import { Observable } from 'rxjs'
 
 @Component({

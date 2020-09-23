@@ -25,29 +25,25 @@
         "api": {
             "tags": []
         },
-        "util": {
-            "tags": []
-        },
-        "shared-data-access": {
-            "tags": []
-        },
-        "api-mongo-models": {
-            "tags": []
-        },
-        "client-data-access": {
-            "tags": []
-        },
-        "client-auth": {
-            "tags": []
-        },
-        "client-ui": {
-            "tags": []
-        },
-        "client-user": {
-            "tags": []
-        },
         "webapp": {
             "tags": []
-        }
+        },
+        "shared-utils": {
+            "tags": []
+        },
+        "webapp-auth": {
+            "tags": []
+        },
+        "webapp-ui": {
+            "tags": []
+        },
+        "webapp-user": {
+            "tags": []
+        },
+        "shared-models": {},
+        "webapp-models": {
+            "tags": []
+        },
+        "api-models": {}
     }
 }

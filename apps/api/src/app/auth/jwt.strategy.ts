@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
-import { TokenPayload } from '@nx-starter/shared/data-access'
+import { TokenPayload } from '@nx-starter/shared-models'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
 @Injectable()
