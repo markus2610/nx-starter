@@ -36,7 +36,6 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Post('logout')
     async logout(@Request() req): Promise<void> {
-        console.log('TCL: AuthController -> constructor -> req', req)
         return this.authService.logout(req.user)
     }
 

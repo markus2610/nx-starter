@@ -10,3 +10,9 @@ export interface IUser {
     verifyToken?: string
     isActive: boolean
 }
+
+export interface IAppUser {
+    userId: string
+    name: string
+    role: EUserRole
+}

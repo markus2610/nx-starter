@@ -5,7 +5,13 @@ import {
     UnauthorizedException,
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { EUserRole, IUser, LoginResult, TokenPayload } from '@nx-starter/shared/data-access'
+import {
+    EUserRole,
+    IAppUser,
+    IUser,
+    LoginResult,
+    TokenPayload,
+} from '@nx-starter/shared/data-access'
 import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
@@ -77,8 +83,8 @@ export class AuthService {
         return { user, accessToken, refreshToken }
     }
 
-    async logout(user: IUser): Promise<void> {
-        await this.refreshTokenService.deleteByUserId(user._id)
+    async logout(user: IAppUser): Promise<void> {
+        await this.refreshTokenService.deleteByUserId(user.userId)
     }
 
     async generateVerifyTokenAndDisableUser(email: string): Promise<IUser> {

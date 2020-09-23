@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router'
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component'
 import { LoginComponent } from './login/login.component'
+import { LogoutComponent } from './logout/logout.component'
 import { RegisterComponent } from './register/register.component'
 import { ResetPasswordComponent } from './reset-password/reset-password.component'
 import { VerifyComponent } from './verify/verify.component'
@@ -15,6 +16,7 @@ import { VerifyComponent } from './verify/verify.component'
         VerifyComponent,
         ForgotPasswordComponent,
         ResetPasswordComponent,
+        LogoutComponent,
     ],
     imports: [
         CommonModule,
@@ -28,6 +30,11 @@ import { VerifyComponent } from './verify/verify.component'
             {
                 path: 'login',
                 component: LoginComponent,
+                pathMatch: 'full',
+            },
+            {
+                path: 'logout',
+                component: LogoutComponent,
                 pathMatch: 'full',
             },
             {

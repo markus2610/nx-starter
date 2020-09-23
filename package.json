@@ -107,7 +107,7 @@
   },
   "lint-staged": {
     "*.ts": "tslint --fix",
-    "*.{js,ts,scss,css,less,jsx,tsx,json,html,xml}": "npm run format --uncommitted"
+    "*.{js,ts,scss,css,less,jsx,tsx,json,html,xml}": "prettier --write"
   },
   "husky": {
     "hooks": {
