@@ -30,32 +30,26 @@ import { VerifyComponent } from './verify/verify.component'
             {
                 path: 'login',
                 component: LoginComponent,
-                pathMatch: 'full',
             },
             {
                 path: 'logout',
                 component: LogoutComponent,
-                pathMatch: 'full',
             },
             {
                 path: 'register',
                 component: RegisterComponent,
-                pathMatch: 'full',
             },
             {
                 path: 'verify',
                 component: VerifyComponent,
-                pathMatch: 'full',
             },
             {
                 path: 'forgot-password',
                 component: ForgotPasswordComponent,
-                pathMatch: 'full',
             },
             {
                 path: 'reset-password/:token',
                 component: ResetPasswordComponent,
-                pathMatch: 'full',
             },
         ]),
     ],

@@ -28,7 +28,9 @@ export class AuthService {
     }
 
     me(): Observable<IUser> {
-        return this.http.get<IUser>(`/api/auth/me`)
+        return this.http
+            .get<IUser>(`/api/auth/me`)
+            .pipe(tap((user: IUser) => this.currentUser$$.next(user)))
     }
 
     login(data: { email: string; password: string }): Observable<IUser> {

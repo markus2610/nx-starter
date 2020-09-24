@@ -39,6 +39,12 @@ export class AuthController {
         return this.authService.logout(req.user)
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('me')
+    async getMe(@Request() req): Promise<IUser> {
+        return this.authService.getLoggedInUser(req.user)
+    }
+
     @Get('verify')
     async verifyUser(@Query('token') verifyToken: string): Promise<boolean> {
         try {

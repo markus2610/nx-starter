@@ -90,6 +90,10 @@ export class AuthService {
         return null
     }
 
+    async getLoggedInUser(appUser: IAppUser): Promise<IUser> {
+        return await this.usersService.findById(appUser.userId)
+    }
+
     async resetPassword(token: string, password: string, passwordConfirm: string): Promise<IUser> {
         const user = await this.usersService.findByToken(token)
         if (!user) {
