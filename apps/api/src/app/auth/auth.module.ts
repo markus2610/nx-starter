@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { PassportModule } from '@nestjs/passport'
 import { ModelNames, RefreshTokenSchema } from '@nx-starter/api-models'
 import { UsersModule } from '../users/users.module'
+import { AuthMailerService } from './auth-mailer.service'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt.strategy'
@@ -25,7 +26,7 @@ import { RefreshTokenService } from './refresh-token.service'
         }),
         MongooseModule.forFeature([{ name: ModelNames.RefreshToken, schema: RefreshTokenSchema }]),
     ],
-    providers: [AuthService, RefreshTokenService, LocalStrategy, JwtStrategy],
+    providers: [AuthService, RefreshTokenService, LocalStrategy, JwtStrategy, AuthMailerService],
     exports: [AuthService],
     controllers: [AuthController],
 })

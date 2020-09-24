@@ -10,6 +10,7 @@ import * as bcryptjs from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
+import { AuthMailerService } from './auth-mailer.service'
 import { RefreshTokenService } from './refresh-token.service'
 
 @Injectable()
@@ -18,6 +19,7 @@ export class AuthService {
         private usersService: UsersService,
         private jwtService: JwtService,
         private refreshTokenService: RefreshTokenService,
+        private authMailerService: AuthMailerService,
     ) {}
 
     async getAuthenticatedUser(email: string, password: string): Promise<IUser> {
@@ -57,6 +59,8 @@ export class AuthService {
         console.log('TCL: VerifyToken :', verifyToken) // ! remove
 
         const user = await this.usersService.create(newUser)
+        this.authMailerService.sendAccountCreatedEmail(user.email)
+
         user.password = undefined
         user.verifyToken = undefined
         return user
@@ -85,6 +89,7 @@ export class AuthService {
         const user = await this.usersService.findByEmail(email)
         if (user) {
             const verifyToken = this.createVerifyToken()
+            this.authMailerService.sendForgotPasswordEmail(user.email, verifyToken)
             return await this.usersService.update(user._id, { isActive: false, verifyToken })
         }
         return null
