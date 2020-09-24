@@ -24,7 +24,7 @@ export class AuthService {
 
     async getAuthenticatedUser(email: string, password: string): Promise<IUser> {
         const user = await this.usersService.findByEmail(email)
-        if (!user) throw new NotFoundException('User not found')
+        if (!user) throw new UnauthorizedException('User not found')
 
         const passwordMatched = await this.comparePasswordWithHash(password, user.password)
         if (passwordMatched) {
@@ -96,7 +96,11 @@ export class AuthService {
     }
 
     async getLoggedInUser(appUser: IAppUser): Promise<IUser> {
-        return await this.usersService.findById(appUser.userId)
+        const user = await this.usersService.findById(appUser.userId)
+        user.password = null
+        user.verifyToken = null
+
+        return user
     }
 
     async resetPassword(token: string, password: string, passwordConfirm: string): Promise<IUser> {
@@ -148,13 +152,21 @@ export class AuthService {
         return await bcryptjs.compare(password, hash)
     }
 
+    async changeUserRole(id: string, role: EUserRole): Promise<IUser> {
+        const user = await this.usersService.update(id, { role })
+        if (!user) throw new NotFoundException('User not found')
+
+        this.refreshTokenService.deleteByUserId(user._id)
+        return user
+    }
+
     private async createAccessToken(user: IUser): Promise<string> {
         const payload: TokenPayload = {
             name: `${user.firstName} ${user.lastName}`,
             role: user.role,
             sub: user._id,
         }
-        return this.jwtService.sign(payload, { expiresIn: '60m' })
+        return this.jwtService.sign(payload, { expiresIn: '30m' }) // TODO
     }
 
     public async createRefreshToken(user: IUser): Promise<string> {

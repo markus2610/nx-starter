@@ -10,8 +10,10 @@ import {
     Request,
     UseGuards,
 } from '@nestjs/common'
-import { IUser, LoginResult } from '@nx-starter/shared-models'
+import { EUserRole, IAppUser, IUser, LoginResult } from '@nx-starter/shared-models'
 import { CreateUserDto } from '../users/dto/create-user.dto'
+import { AdminGuard } from './admin.guard'
+import { AppUser } from './app-user.decorator'
 import { AuthService } from './auth.service'
 import { ForgotPasswordDto } from './dto/forgot-password.dto'
 import { ResetPasswordDto } from './dto/reset-password.dto'
@@ -35,14 +37,14 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Post('logout')
-    async logout(@Request() req): Promise<void> {
-        return this.authService.logout(req.user)
+    async logout(@AppUser() user: IAppUser): Promise<void> {
+        return this.authService.logout(user)
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('me')
-    async getMe(@Request() req): Promise<IUser> {
-        return this.authService.getLoggedInUser(req.user)
+    @Get('me')
+    async getMe(@AppUser() user: IAppUser): Promise<IUser> {
+        return this.authService.getLoggedInUser(user)
     }
 
     @Get('verify')
@@ -53,6 +55,26 @@ export class AuthController {
         } catch (error) {
             return false
         }
+    }
+
+    @UseGuards(JwtAuthGuard) // TODO change to admin
+    @Post('make-admin')
+    async makeAdmin(@Body() dto: { userId: string }): Promise<void> {
+        const user = await this.authService.changeUserRole(dto.userId, EUserRole.Admin)
+        if (!user) {
+            throw new BadRequestException('No user with that email was found')
+        }
+        return
+    }
+
+    @UseGuards(JwtAuthGuard) // TODO change to super admin
+    @Post('make-superadmin')
+    async makeSuperAdmin(@Body() dto: { userId: string }): Promise<void> {
+        const user = await this.authService.changeUserRole(dto.userId, EUserRole.SuperAdmin)
+        if (!user) {
+            throw new BadRequestException('No user with that email was found')
+        }
+        return
     }
 
     @UseGuards(JwtAuthGuard)

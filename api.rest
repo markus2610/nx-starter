@@ -2,7 +2,9 @@
 @port = 3333
 @host = http://{{hostname}}:{{port}}/api
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUmFqdSA3Iiwicm9sZSI6IlVzZXIiLCJzdWIiOiJ1X2VzMjFsOHA4NmYiLCJpYXQiOjE2MDAyNTA1MDIsImV4cCI6MTYwMDI1NDEwMn0.58PHrSOW-MsM3NHEPGR__epqmHkpG6DXbNLMUJGY7p8
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQSBCIiwicm9sZSI6IlVzZXIiLCJzdWIiOiJ1X3IwbmRmOHNpcjciLCJpYXQiOjE2MDA5NzY0MTcsImV4cCI6MTYwMDk3ODIxN30.yzq4pFLZDjZercWwpfvE1ot96wNKiePWB_K67m9MW4s
+
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1X3IwbmRmOHNpcjciLCJpYXQiOjE2MDA5NzM1MzQsImV4cCI6MTYwMzU2NTUzNH0.6SKJhiM7UL3ExBsIl4PZ9Sj17owYWFHKOCN00teg1Fs
 
 @accessToken = Bearer {{token}}
 
@@ -16,7 +18,7 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "raju7@b.com", "password": "!Abcd1234"
+    "email": "me2@b.com", "password": "!Abcd1234"
 }
 
 ###
@@ -63,6 +65,30 @@ Authorization: {{accessToken}}
 {
     "password": "!Abcd12345",
     "passwordConfirm": "!Abcd12345"
+}
+
+###
+
+GET {{host}}/auth/me
+Authorization: {{accessToken}}
+
+###
+
+POST {{host}}/auth/token
+Content-Type: application/json
+
+{
+    "refreshToken": "{{refreshToken}}"
+}
+
+###
+
+POST {{host}}/auth/make-admin
+Content-Type: application/json
+Authorization: {{accessToken}}
+
+{
+    "userId": "u_r0ndf8sir7"
 }
 
 ###
