@@ -44,6 +44,9 @@
         "webapp-models": {
             "tags": []
         },
-        "api-models": {}
+        "api-models": {},
+        "webapp-core": {
+            "tags": []
+        }
     }
 }

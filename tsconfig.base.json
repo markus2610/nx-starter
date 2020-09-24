@@ -22,7 +22,8 @@
             "@nx-starter/webapp-user": ["libs/webapp-user/src/index.ts"],
             "@nx-starter/shared-models": ["libs/shared-models/src/index.ts"],
             "@nx-starter/webapp-models": ["libs/webapp-models/src/index.ts"],
-            "@nx-starter/api-models": ["libs/api-models/src/index.ts"]
+            "@nx-starter/api-models": ["libs/api-models/src/index.ts"],
+            "@nx-starter/webapp-core": ["libs/webapp-core/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
