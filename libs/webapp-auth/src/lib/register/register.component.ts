@@ -11,6 +11,7 @@ import { AuthService } from '@nx-starter/webapp-models'
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup
     loading = false
+    hasAgreed = false
 
     constructor(
         private authService: AuthService,
@@ -24,12 +25,17 @@ export class RegisterComponent implements OnInit {
     ngOnInit(): void {}
 
     signUp() {
+        console.log('TCL: here :') // ! remove
         this.loading = true
         const value = this.registerForm.value
         this.authService.signup(value).subscribe((v) => {
             this.loading = false
             this.router.navigate(['/'])
         })
+    }
+
+    toggleHasAgreed(): void {
+        this.hasAgreed = !this.hasAgreed
     }
 
     private defineForm() {
