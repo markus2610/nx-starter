@@ -14,7 +14,9 @@
                         "outputPath": "dist/apps/api",
                         "main": "apps/api/src/main.ts",
                         "tsConfig": "apps/api/tsconfig.app.json",
-                        "assets": ["apps/api/src/assets"]
+                        "assets": [
+                            "apps/api/src/assets"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -39,8 +41,14 @@
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
                     "options": {
-                        "tsConfig": ["apps/api/tsconfig.app.json", "apps/api/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!apps/api/**/*"]
+                        "tsConfig": [
+                            "apps/api/tsconfig.app.json",
+                            "apps/api/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/api/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -75,8 +83,16 @@
                         "polyfills": "apps/webapp/src/polyfills.ts",
                         "tsConfig": "apps/webapp/tsconfig.app.json",
                         "aot": true,
-                        "assets": ["apps/webapp/src/favicon.ico", "apps/webapp/src/assets"],
-                        "styles": ["apps/webapp/src/styles.scss"],
+                        "assets": [
+                            "apps/webapp/src/favicon.ico",
+                            "apps/webapp/src/assets"
+                        ],
+                        "styles": [
+                            "node_modules/primeicons/primeicons.css",
+                            "node_modules/primeng/resources/themes/saga-green/theme.css",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "apps/webapp/src/styles.scss"
+                        ],
                         "scripts": []
                     },
                     "configurations": {
@@ -135,7 +151,10 @@
                             "apps/webapp/tsconfig.app.json",
                             "apps/webapp/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!apps/webapp/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/webapp/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -160,7 +179,10 @@
                             "libs/shared-utils/tsconfig.lib.json",
                             "libs/shared-utils/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/shared-utils/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/shared-utils/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -185,7 +207,10 @@
                             "libs/webapp-auth/tsconfig.lib.json",
                             "libs/webapp-auth/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/webapp-auth/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/webapp-auth/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -215,7 +240,10 @@
                             "libs/webapp-ui/tsconfig.lib.json",
                             "libs/webapp-ui/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/webapp-ui/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/webapp-ui/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -245,7 +273,10 @@
                             "libs/webapp-user/tsconfig.lib.json",
                             "libs/webapp-user/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/webapp-user/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/webapp-user/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -275,7 +306,10 @@
                             "libs/shared-models/tsconfig.lib.json",
                             "libs/shared-models/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/shared-models/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/shared-models/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -300,7 +334,10 @@
                             "libs/webapp-models/tsconfig.lib.json",
                             "libs/webapp-models/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/webapp-models/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/webapp-models/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -330,7 +367,10 @@
                             "libs/api-models/tsconfig.lib.json",
                             "libs/api-models/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/api-models/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/api-models/**/*"
+                        ]
                     }
                 },
                 "test": {
@@ -355,7 +395,10 @@
                             "libs/webapp-core/tsconfig.lib.json",
                             "libs/webapp-core/tsconfig.spec.json"
                         ],
-                        "exclude": ["**/node_modules/**", "!libs/webapp-core/**/*"]
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs/webapp-core/**/*"
+                        ]
                     }
                 },
                 "test": {
