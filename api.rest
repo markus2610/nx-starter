@@ -101,3 +101,14 @@ Authorization: {{accessToken}}
 GET {{host}}/profile
 Content-Type: application/json
 Authorization: {{accessToken}}
+
+###
+
+
+###############################################################################
+#                                  USERS                                      #
+###############################################################################
+
+GET {{host}}/users?sort=email,createdAt&order=asc,desc
+Content-Type: application/json
+# Authorization: {{accessToken}}
