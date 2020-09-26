@@ -109,6 +109,6 @@ Authorization: {{accessToken}}
 #                                  USERS                                      #
 ###############################################################################
 
-GET {{host}}/users?size=100&sort=email,createdAt&order=asc,desc&searchFor=isActive&searchTerm=false&searchOperator=is
+GET {{host}}/users?size=100&sort=email,createdAt&order=asc,desc&search=email,like,raju|isActive,is,false
 Content-Type: application/json
 # Authorization: {{accessToken}}

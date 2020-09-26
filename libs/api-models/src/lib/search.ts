@@ -1,14 +1,28 @@
 export enum SearchOperator {
     EQ = 'eq',
-    LIKE = '',
-    STARTS_WITH = 'sw',
-    ENDS_WITH = 'ew',
+    NONE = '',
+    LIKE = 'like',
+    STARTS_WITH = 'starts',
+    ENDS_WITH = 'ends',
     NOT = 'not',
     GT = 'gt',
     GTE = 'gte',
     LT = 'lt',
     LTE = 'lte',
     IS_BOOLEAN = 'is',
+}
+
+export function buildSearchConfigFromString<T>(search: string) {
+    const params: string[][] = search.split('|').map((param) => param?.split(','))
+
+    let result = {}
+
+    params.forEach((x) => {
+        const query = buildMongoSearchQuery<T>(x[0] as keyof T, x[1] as SearchOperator, x[2])
+        result = { ...result, ...query }
+    })
+    console.log('TCL: UsersController -> constructor -> query', result)
+    return result
 }
 
 export function buildMongoSearchQuery<T>(
@@ -28,7 +42,7 @@ export function buildMongoSearchQuery<T>(
         case SearchOperator.LTE:
             return { [key]: { $lte: Number(value) } }
         case SearchOperator.IS_BOOLEAN:
-            return { [key]: Boolean(JSON.parse(value)) }
+            return { [key]: Boolean(value ?? JSON.parse(value)) }
 
         default:
             return { [key]: getMongoRegexConfig(operator, value) }
@@ -52,6 +66,7 @@ function getMongoRegexConfig(operator: SearchOperator, value: string): { [key: s
         case SearchOperator.NOT:
             return { $regex: `^((?!${value}).)*$`, $options: 'i' }
         case SearchOperator.LIKE:
+        case SearchOperator.NONE:
         default:
             return { $regex: value, $options: 'i' }
     }
