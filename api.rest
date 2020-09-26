@@ -109,6 +109,6 @@ Authorization: {{accessToken}}
 #                                  USERS                                      #
 ###############################################################################
 
-GET {{host}}/users?sort=email,createdAt&order=asc,desc
+GET {{host}}/users?size=100&sort=email,createdAt&order=asc,desc&searchFor=isActive&searchTerm=false&searchOperator=is
 Content-Type: application/json
 # Authorization: {{accessToken}}

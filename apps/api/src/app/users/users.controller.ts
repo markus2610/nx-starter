@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common'
+import { buildMongoSearchQuery, SearchOperator } from '@nx-starter/api-models'
 import { IUser } from '@nx-starter/shared-models'
 import { getPaginationConfig, getSortConfig, SortOrder } from '@nx-starter/shared-utils'
 import { AdminGuard } from '../auth/admin.guard'
@@ -10,6 +11,9 @@ export class UsersController {
 
     @Get('')
     async getAll(
+        @Query('searchFor') searchFor: keyof IUser | null,
+        @Query('searchOperator') searchOperator: SearchOperator = SearchOperator.LIKE,
+        @Query('searchTerm') searchTerm: string | null,
         @Query('page') page = 1,
         @Query('size') size = 10,
         @Query('sort') sort = 'createdAt',
@@ -18,7 +22,10 @@ export class UsersController {
         const pagination = getPaginationConfig(page, size)
         const sorting = getSortConfig(sort, order)
 
-        return this.usersService.find({}, pagination, sorting)
+        const query = buildMongoSearchQuery(searchFor, searchOperator, searchTerm)
+        console.log('TCL: UsersController -> constructor -> query', query)
+
+        return this.usersService.find(query, pagination, sorting)
     }
 
     @Get(':id')
