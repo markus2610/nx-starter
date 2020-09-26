@@ -15,7 +15,10 @@
         "interface-over-type-literal": true,
         "max-line-length": [
             true,
-            { "limit": 100, "ignore-pattern": "^import |^export {(.*?)} |http" }
+            {
+                "limit": 100,
+                "ignore-pattern": "^import |^export {(.*?)} |http"
+            }
         ],
         "ordered-imports": [
             true,
