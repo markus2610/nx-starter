@@ -495,6 +495,36 @@
                     }
                 }
             }
+        },
+        "admin-users": {
+            "projectType": "library",
+            "root": "libs/admin-users",
+            "sourceRoot": "libs/admin-users/src",
+            "prefix": "nx-starter",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs/admin-users/tsconfig.lib.json",
+                            "libs/admin-users/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!libs/admin-users/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/admin-users/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            },
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            }
         }
     },
     "cli": {

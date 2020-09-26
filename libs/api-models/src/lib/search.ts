@@ -12,16 +12,31 @@ export enum SearchOperator {
     IS_BOOLEAN = 'is',
 }
 
+interface Config<T> {
+    key: keyof T | null
+    operator: SearchOperator
+    value: string | null
+}
+
+function makeConfig<T>(valueAsString: string): Config<T> {
+    const props = valueAsString.split(',')
+    return {
+        key: props[0] as keyof T,
+        operator: props[1] as SearchOperator,
+        value: props[2],
+    }
+}
+
 export function buildSearchConfigFromString<T>(search: string) {
-    const params: string[][] = search.split('|').map((param) => param?.split(','))
+    const params: Config<T>[] = search.split('|').map((param) => makeConfig(param))
 
     let result = {}
 
-    params.forEach((x) => {
-        const query = buildMongoSearchQuery<T>(x[0] as keyof T, x[1] as SearchOperator, x[2])
+    params.forEach((config) => {
+        const query = buildMongoSearchQuery<T>(config.key, config.operator, config.value)
         result = { ...result, ...query }
     })
-    console.log('TCL: UsersController -> constructor -> query', result)
+    console.log('TCL: query', result)
     return result
 }
 
@@ -42,14 +57,15 @@ export function buildMongoSearchQuery<T>(
         case SearchOperator.LTE:
             return { [key]: { $lte: Number(value) } }
         case SearchOperator.IS_BOOLEAN:
-            return { [key]: Boolean(value ?? JSON.parse(value)) }
+            if (value) return { [key]: JSON.parse(value) }
+            break
 
         default:
-            return { [key]: getMongoRegexConfig(operator, value) }
+            return { [key]: getMongoRegexQuery(operator, value) }
     }
 }
 
-function getMongoRegexConfig(operator: SearchOperator, value: string): { [key: string]: string } {
+function getMongoRegexQuery(operator: SearchOperator, value: string): { [key: string]: string } {
     if (!value) return {}
 
     switch (operator) {
