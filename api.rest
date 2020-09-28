@@ -101,3 +101,14 @@ Authorization: {{accessToken}}
 GET {{host}}/profile
 Content-Type: application/json
 Authorization: {{accessToken}}
+
+###
+
+
+###############################################################################
+#                                  USERS                                      #
+###############################################################################
+
+GET {{host}}/users?size=100&sort=email,createdAt&order=asc,desc&search=firstName,like,raju|isActive,is,false
+Content-Type: application/json
+# Authorization: {{accessToken}}

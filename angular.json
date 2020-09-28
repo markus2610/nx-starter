@@ -76,7 +76,12 @@
                         "tsConfig": "apps/webapp/tsconfig.app.json",
                         "aot": true,
                         "assets": ["apps/webapp/src/favicon.ico", "apps/webapp/src/assets"],
-                        "styles": ["apps/webapp/src/styles.scss"],
+                        "styles": [
+                            "node_modules/primeicons/primeicons.css",
+                            "node_modules/primeng/resources/themes/saga-green/theme.css",
+                            "node_modules/primeng/resources/primeng.min.css",
+                            "apps/webapp/src/styles.scss"
+                        ],
                         "scripts": []
                     },
                     "configurations": {
@@ -362,6 +367,155 @@
                     "builder": "@nrwl/jest:jest",
                     "options": {
                         "jestConfig": "libs/webapp-core/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            },
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            }
+        },
+        "admin": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:component": {
+                    "style": "scss"
+                }
+            },
+            "root": "apps/admin",
+            "sourceRoot": "apps/admin/src",
+            "prefix": "admin",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/apps/admin",
+                        "index": "apps/admin/src/index.html",
+                        "main": "apps/admin/src/main.ts",
+                        "polyfills": "apps/admin/src/polyfills.ts",
+                        "tsConfig": "apps/admin/tsconfig.app.json",
+                        "aot": true,
+                        "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
+                        "styles": ["apps/admin/src/styles.scss"],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/admin/src/environments/environment.ts",
+                                    "with": "apps/admin/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "admin:build",
+                        "proxyConfig": "apps/admin/proxy.conf.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "admin:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "admin:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "apps/admin/tsconfig.app.json",
+                            "apps/admin/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!apps/admin/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "apps/admin/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "admin-e2e": {
+            "root": "apps/admin-e2e",
+            "sourceRoot": "apps/admin-e2e/src",
+            "projectType": "application",
+            "architect": {
+                "e2e": {
+                    "builder": "@nrwl/cypress:cypress",
+                    "options": {
+                        "cypressConfig": "apps/admin-e2e/cypress.json",
+                        "tsConfig": "apps/admin-e2e/tsconfig.e2e.json",
+                        "devServerTarget": "admin:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "admin:serve:production"
+                        }
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["apps/admin-e2e/tsconfig.e2e.json"],
+                        "exclude": ["**/node_modules/**", "!apps/admin-e2e/**/*"]
+                    }
+                }
+            }
+        },
+        "admin-users": {
+            "projectType": "library",
+            "root": "libs/admin-users",
+            "sourceRoot": "libs/admin-users/src",
+            "prefix": "nx-starter",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs/admin-users/tsconfig.lib.json",
+                            "libs/admin-users/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!libs/admin-users/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/admin-users/jest.config.js",
                         "passWithNoTests": true
                     }
                 }
